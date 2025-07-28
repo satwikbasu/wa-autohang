@@ -18,15 +18,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Download a Gradle distribution, create wrapper, then use it
-      - name: Prepare Gradle Wrapper
-        run: |
-          wget https://services.gradle.org/distributions/gradle-8.7-bin.zip -O gradle.zip
-          unzip -q gradle.zip -d $HOME/gradle
-          $HOME/gradle/gradle-8.7/bin/gradle wrapper
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Install Android SDK
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          script: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
